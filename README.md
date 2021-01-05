@@ -31,3 +31,18 @@ http://localhost:8080/candlesticks?symbol=ETHUSDT
 * macd tracker
 * rsi tracker
 * save all the things to a mongo record for dashboard integration
+
+## Binance websocket info:
+
+wss://stream.binance.com:9443/ws/<streamName>
+
+send a subscriber payload of:
+
+```{
+"method": "SUBSCRIBE",
+"params":
+[
+"ethusdt@kline_5m"
+],
+"id": 1
+}```

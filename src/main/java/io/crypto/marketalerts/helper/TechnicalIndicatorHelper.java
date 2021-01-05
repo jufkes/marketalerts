@@ -8,6 +8,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+// the initial EMA needs to be calculated with an SMA. SMA is equivalent to a mean calculation
+// initial EMA = currentValue * smoothingValue/(period+1) + SMA(period) * (1-smoothingValue/(period+1)
+// currentValue * smoothingValue/(period+1) + previousEMA * (1-smoothingValue/(period+1))
+// example: period = 5; smoothingValue = 2; values: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
+// SMA = (1.2, 1.3, 1.4, 1.5, 1.6)/5
+// EMA = 1.1 * 2/(5+1) + SMA(5) * (1-2/(5+1))
 public class TechnicalIndicatorHelper {
 
     public static double round(double value) {
@@ -22,10 +29,6 @@ public class TechnicalIndicatorHelper {
 
     public static SmaData calculateSmaData(List<CandleStickData> candles, Integer period) {
         List<Double> prices = candles.stream().map(CandleStickData::getClose).collect(Collectors.toList());
-
-        double[] results = new double[prices.size()];
-
-        int maxLength = prices.size() - period;
 
         for (int i = 0; i <= maxLength; i++) {
             results[(i + period - 1)] = round((Arrays.stream(Arrays.copyOfRange(prices.toArray(), i, (i + period))).sum()) / period);
