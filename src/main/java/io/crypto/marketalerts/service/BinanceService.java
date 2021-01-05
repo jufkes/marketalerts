@@ -1,6 +1,5 @@
 package io.crypto.marketalerts.service;
 
-import io.crypto.marketalerts.model.BinanceCandleStickData;
 import io.crypto.marketalerts.model.CandleStickData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +7,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,7 +23,7 @@ public class BinanceService {
         List<ArrayList> data = webClient.get().uri(uriBuilder ->
                 uriBuilder.queryParam("symbol", symbol)
                         .queryParam("interval", "4h")
-                        .queryParam("limit", 25).build())
+                        .queryParam("limit", 27).build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<ArrayList>>() {})
@@ -48,5 +46,11 @@ public class BinanceService {
             return List.of();
         }
     }
+
+    public void processData(String symbol) {
+        List<CandleStickData> candleStickData = getCandlesStickData(symbol);
+
+    }
+
 }
 
