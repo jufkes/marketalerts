@@ -15,16 +15,17 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Validated
-public class SmaController {
+public class EmaController {
 
     private final BinanceService binanceService;
 
-    @GetMapping("/smadata")
+    @GetMapping("/emadata")
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval, @RequestParam(value="period") Integer period) {
         // increment the period so that we get the right number of candles for processing
         period++;
         List<CandleStickData> candles = binanceService.getCandlesStickData(symbol, interval, period);
-        Double sma = TechnicalIndicatorHelper.calculateSmaData(candles, period);
-        return ResponseEntity.ok(sma);
+        Double ema = TechnicalIndicatorHelper.calculateEmaData(candles, period);
+        return ResponseEntity.ok(ema);
     }
+
 }
