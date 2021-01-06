@@ -30,4 +30,18 @@ public class TechnicalIndicatorHelper {
         return ema;
     }
 
+    public static String calculateMacdData(List<CandleStickData> candles) {
+        Double twelveEma = calculateEmaData(candles, 12);
+        Double twentySixEma = calculateEmaData(candles, 26);
+        String state;
+        if (twelveEma > twentySixEma) {
+            state = "bullish";
+        } else if (twelveEma < twentySixEma) {
+            state = "bearish";
+        } else {
+            state = "none";
+        }
+        return state;
+    }
+
 }
