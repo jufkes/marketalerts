@@ -18,12 +18,11 @@ public class BinanceService {
 
     private final WebClient webClient;
 
-    public List<CandleStickData> getCandlesStickData(String symbol) {
-
+    public List<CandleStickData> getCandlesStickData(String symbol, String interval, Integer period) {
         List<ArrayList> data = webClient.get().uri(uriBuilder ->
                 uriBuilder.queryParam("symbol", symbol)
-                        .queryParam("interval", "4h")
-                        .queryParam("limit", 27).build())
+                        .queryParam("interval", interval)
+                        .queryParam("limit", period).build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<ArrayList>>() {})
@@ -47,8 +46,8 @@ public class BinanceService {
         }
     }
 
-    public void processData(String symbol) {
-        List<CandleStickData> candleStickData = getCandlesStickData(symbol);
+    public void processData(String symbol, String interval, Integer period) {
+        List<CandleStickData> candleStickData = getCandlesStickData(symbol, interval, period);
 
     }
 

@@ -16,8 +16,8 @@ public class CandleStickController {
     private final BinanceService binanceService;
 
     @GetMapping("/process")
-    public ResponseEntity processData(@RequestParam(value="symbol") String symbol) {
-        binanceService.processData(symbol);
+    public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval, @RequestParam(value="period") Integer period) {
+        binanceService.processData(symbol, interval, period);
         return ResponseEntity.ok().build();
     }
 

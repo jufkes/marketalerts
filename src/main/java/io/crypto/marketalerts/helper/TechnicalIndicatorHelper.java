@@ -23,10 +23,10 @@ public class TechnicalIndicatorHelper {
         Collections.reverse(candles);
         List<Double> prices = candles.stream().map(CandleStickData::getClose).collect(Collectors.toList());
         double totalPriceValues = 0;
-        period++;
+        //decrement the period to the base value...it was previously incremented for candle retrieval
+        period--;
         for (int i = 1; i <= period; i++) {
             double price = prices.get(i);
-            System.out.println(price);
             totalPriceValues = totalPriceValues + price;
         }
         SmaData SmaData = io.crypto.marketalerts.model.SmaData.builder().build();

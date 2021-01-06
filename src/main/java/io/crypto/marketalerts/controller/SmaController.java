@@ -21,8 +21,10 @@ public class SmaController {
     private final BinanceService binanceService;
 
     @GetMapping("/smadata")
-    public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="period") Integer period) {
-        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol);
+    public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval, @RequestParam(value="period") Integer period) {
+        // increment the period so that we get the right number of candles for processing
+        period++;
+        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol, interval, period);
         SmaData sma = TechnicalIndicatorHelper.calculateSmaData(candles, period);
         return ResponseEntity.ok(sma);
     }
