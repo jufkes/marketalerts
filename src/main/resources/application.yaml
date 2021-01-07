@@ -1,6 +1,5 @@
 server:
   port: 8080
-
 #mongodb
 spring:
   data:
@@ -8,4 +7,5 @@ spring:
       host: localhost
       port: 27017
       database: market-alerts
+
 

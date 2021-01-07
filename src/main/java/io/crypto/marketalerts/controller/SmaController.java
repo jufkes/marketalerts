@@ -23,7 +23,7 @@ public class SmaController {
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval, @RequestParam(value="period") Integer period) {
         // increment the period so that we get the right number of candles for processing
         period++;
-        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol, interval, period);
+        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), interval, period);
         Double sma = TechnicalIndicatorHelper.calculateSmaData(candles, period);
         return ResponseEntity.ok(sma);
     }
