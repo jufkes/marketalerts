@@ -4,12 +4,8 @@ API and service for pulling data from binance and doing work against it.
 
 More to do.
 
-## Local Development Requirements
-Install docker
-
 ## Usage
 
-### Local Development Database
 Make sure docker is installed.
 ```
 docker run --name market-alerts -p 27017:27017 -d mongo:4.2.0
