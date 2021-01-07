@@ -6,18 +6,25 @@ More to do.
 
 ## Usage
 
-Open in your favorite IDE. Setup java 11. Run it. 
+Make sure docker is installed.
+```
+docker run --name market-alerts -p 27017:27017 -d mongo:4.2.0
+```
+
+Open in your favorite IDE. Setup java 11. Make sure to install lombok. Run it.
+
+ 
 
 To access data from the service, call the following: 
 
-```http://localhost:8080/candlesticks?symbol=<symbol>```
+```http://localhost:8080/smadata?symbol=<symbol>&interval=4h&period=10```
 
 Where `symbol` is the coin pair you want data from. **Note** it must be all caps because i didnt account for that yet. 
 
 Example: 
 
 ```
-http://localhost:8080/candlesticks?symbol=ETHUSDT
+http://localhost:8080/smadata?symbol=ETHUSDT&interval=4h&period=10
 ```
 
 ## TODO
