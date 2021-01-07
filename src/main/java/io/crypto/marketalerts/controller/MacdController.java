@@ -22,7 +22,7 @@ public class MacdController {
     @GetMapping("/macddata")
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval) {
         Integer period = 27;
-        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol, interval, period);
+        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), interval, period);
         String state = TechnicalIndicatorHelper.calculateMacdData(candles);
         return ResponseEntity.ok(state);
     }

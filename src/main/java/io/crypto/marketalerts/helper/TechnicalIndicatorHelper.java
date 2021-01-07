@@ -44,4 +44,28 @@ public class TechnicalIndicatorHelper {
         return state;
     }
 
+    public static Double calculateRsiData(List<CandleStickData> candles) {
+        int periodLength = 14;
+        int lastBar = candles.size() - 1;
+        int firstBar = lastBar - periodLength + 1;
+        if (firstBar < 0) {
+            String msg = "Quote history length " + candles.size() + " is insufficient to calculate the indicator.";
+        }
+
+        double aveGain = 0, aveLoss = 0;
+        for (int bar = firstBar + 1; bar <= lastBar; bar++) {
+            double change = candles.get(bar).getClose() - candles.get(bar - 1).getClose();
+            if (change >= 0) {
+                aveGain += change;
+            } else {
+                aveLoss += change;
+            }
+        }
+
+        double rs = aveGain / Math.abs(aveLoss);
+        double rsi = 100 - 100 / (1 + rs);
+
+        return rsi;
+    }
+
 }
