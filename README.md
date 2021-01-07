@@ -8,21 +8,27 @@ More to do.
 
 Open in your favorite IDE. Setup java 11. Run it. 
 
-To access data from the service, call the following: 
+To access data from the service, call the following endpoints: 
 
-```http://localhost:8080/candlesticks?symbol=<symbol>```
 
-Where `symbol` is the coin pair you want data from. **Note** it must be all caps because i didnt account for that yet. 
-
-Example: 
 
 ```
-http://localhost:8080/candlesticks?symbol=ETHUSDT
+http://localhost:8080/rsidata?symbol=ETHUSDT&interval=4h
+http://localhost:8080/smadata?symbol=ETHUSDT&interval=4h&period=10
+http://localhost:8080/emadata?symbol=ETHUSDT&interval=4h&period=10
+http://localhost:8080/macddata?symbol=ETHUSDT&interval=4h
+
 ```
+
+| variable name | description | example |
+| ----- | ------ | ------ |
+| symbol | trade pair to return data on | ETHUSDT |
+| interval | kline interval to use | 4h (options: 15m, 30m, 1h, 12h, 24h) |
+| period | calculation value for moving averages | 10 |
 
 ## TODO
 
-* docker and kubernetes setup
+* kubernetes setup
 * jenkins build (or github actions) 
 * flux setup (github build trigger)
 * sweep high / low alerts

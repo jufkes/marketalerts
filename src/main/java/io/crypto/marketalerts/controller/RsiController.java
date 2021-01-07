@@ -22,7 +22,7 @@ public class RsiController {
     @GetMapping("/rsidata")
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval) {
         Integer period = 14;
-        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol, interval, period);
+        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), interval, period);
         Double rsi = TechnicalIndicatorHelper.calculateRsiData(candles);
         return ResponseEntity.ok(rsi);
     }
