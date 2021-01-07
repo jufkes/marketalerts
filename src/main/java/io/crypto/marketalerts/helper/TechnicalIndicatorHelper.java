@@ -1,6 +1,8 @@
 package io.crypto.marketalerts.helper;
 
 import io.crypto.marketalerts.model.CandleStickData;
+import io.crypto.marketalerts.model.MacdData;
+import io.crypto.marketalerts.model.TokenRecord4h;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +32,7 @@ public class TechnicalIndicatorHelper {
         return ema;
     }
 
-    public static String calculateMacdData(List<CandleStickData> candles) {
+    public static MacdData calculateMacdData(List<CandleStickData> candles) {
         Double twelveEma = calculateEmaData(candles, 12);
         Double twentySixEma = calculateEmaData(candles, 26);
         String state;
@@ -41,7 +43,8 @@ public class TechnicalIndicatorHelper {
         } else {
             state = "none";
         }
-        return state;
+        MacdData macdData = MacdData.builder().ema12(calculateEmaData(candles, 12)).ema26(calculateEmaData(candles, 26)).direction(state).confirmed(true).build();
+        return macdData;
     }
 
     public static Double calculateRsiData(List<CandleStickData> candles) {
