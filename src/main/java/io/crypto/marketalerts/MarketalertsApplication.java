@@ -14,15 +14,4 @@ public class MarketalertsApplication {
         SpringApplication.run(MarketalertsApplication.class, args);
     }
 
-// TODO: This can be removed it just provides some initial data on start up
-//    @Autowired
-//    private PersonRepository personRepository;
-
-//    @Override
-//    public void run(String... args) throws Exception {
-//
-//        personRepository.save(Person.builder().id("1382050000").name("user").build());
-//
-//
-//    }
 }

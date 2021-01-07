@@ -12,7 +12,8 @@ public class TokenRecord4h {
 
     @Id
     private String id;
-    private String symbol;
+    // We don't need the symbol field the id can be the symbol value and can be queried later
+//    private String symbol;
     private MacdData macd;
 
     @Data
