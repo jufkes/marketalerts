@@ -28,10 +28,23 @@ public class MacdController {
     @GetMapping("/macddata")
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval) {
         Integer period = 27;
+
         List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), interval, period);
         MacdData macdData = TechnicalIndicatorHelper.calculateMacdData(candles);
-        TokenRecord4h.MacdData.MacdDataBuilder macdDataBuilder = TokenRecord4h.MacdData.builder().direction(macdData.getDirection()).twelveEma(macdData.getEma12()).twentySixEma(macdData.getEma26()).confirmed(macdData.isConfirmed());
-        TokenRecord4h.builder().id("1").symbol(symbol).macd(macdDataBuilder);
+
+        TokenRecord4h.MacdData.MacdDataBuilder macdDataBuilder = TokenRecord4h.MacdData.builder()
+                .direction(macdData.getDirection())
+                .twelveEma(macdData.getEma12()).twentySixEma(macdData.getEma26())
+                .confirmed(macdData.isConfirmed());
+
+        TokenRecord4h.MacdData macdDataReturn = TokenRecord4h.MacdData.builder()
+                .confirmed(macdData.isConfirmed())
+                .direction(macdData.getDirection())
+                .twelveEma(macdData.getEma12()).twentySixEma(macdData.getEma26()).build();
+
+        TokenRecord4h tokenRecord4h = TokenRecord4h.builder().id("1").symbol(symbol).macd(macdDataReturn).build();
+
+        tokenRecord4hRepository.save(tokenRecord4h);
         return ResponseEntity.ok().build();
     }
 }
