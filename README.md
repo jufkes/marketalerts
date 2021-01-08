@@ -18,7 +18,9 @@ Open in your favorite IDE. Setup java 11. Make sure to install lombok. Run it.
 To access data from the service, call the following endpoints: 
 
 ```
-http://localhost:8080/rsidata?symbol=ETHUSDT&interval=4h
+-- this first call will write to mongo --
+http://localhost:8080/process?symbol=ethusdt&interval=4h&period=30
+-- these do not and should be refactored to pull data from mongo
 http://localhost:8080/smadata?symbol=ETHUSDT&interval=4h&period=10
 http://localhost:8080/emadata?symbol=ETHUSDT&interval=4h&period=10
 http://localhost:8080/macddata?symbol=ETHUSDT&interval=4h
@@ -37,10 +39,6 @@ http://localhost:8080/macddata?symbol=ETHUSDT&interval=4h
 * flux setup (github build trigger)
 * sweep high / low alerts
 * discord integration
-* 10/20 moving average tracker
-* macd tracker
-* rsi tracker
-* save all the things to a mongo record for dashboard integration
 
 ## Binance websocket info:
 

@@ -1,7 +1,7 @@
 package io.crypto.marketalerts.controller;
 
-import io.crypto.marketalerts.model.CandleStickData;
 import io.crypto.marketalerts.service.BinanceService;
+import io.crypto.marketalerts.service.CalculationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Validated
 public class CandleStickController {
-    private final BinanceService binanceService;
+
+    private final CalculationService calculationService;
 
     @GetMapping("/process")
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval, @RequestParam(value="period") Integer period) {
-        binanceService.processData(symbol.toUpperCase(), interval, period);
+        calculationService.processData(symbol.toUpperCase(), interval, period);
         return ResponseEntity.ok().build();
     }
 

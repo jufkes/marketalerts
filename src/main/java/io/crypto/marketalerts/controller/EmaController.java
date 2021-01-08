@@ -2,6 +2,7 @@ package io.crypto.marketalerts.controller;
 
 import io.crypto.marketalerts.helper.TechnicalIndicatorHelper;
 import io.crypto.marketalerts.model.CandleStickData;
+import io.crypto.marketalerts.model.EmaData;
 import io.crypto.marketalerts.service.BinanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class EmaController {
         // increment the period so that we get the right number of candles for processing
         period++;
         List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), interval, period);
-        Double ema = TechnicalIndicatorHelper.calculateEmaData(candles, period);
+        EmaData ema = TechnicalIndicatorHelper.calculateEmaData(candles);
         return ResponseEntity.ok(ema);
     }
 

@@ -1,8 +1,6 @@
 package io.crypto.marketalerts.helper;
 
-import io.crypto.marketalerts.model.CandleStickData;
-import io.crypto.marketalerts.model.MacdData;
-import io.crypto.marketalerts.model.TokenRecord4h;
+import io.crypto.marketalerts.model.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +22,7 @@ public class TechnicalIndicatorHelper {
         return totalPriceValues / period;
     }
 
-    public static Double calculateEmaData(List<CandleStickData> candles, Integer period) {
+    private static Double calculateEma(List<CandleStickData> candles, Integer period) {
         Integer smoothingValue = 2;
         period--;
         List<Double> prices = candles.stream().map(CandleStickData::getClose).collect(Collectors.toList());
@@ -32,22 +30,43 @@ public class TechnicalIndicatorHelper {
         return ema;
     }
 
-    public static MacdData calculateMacdData(List<CandleStickData> candles) {
-        Double twelveEma = calculateEmaData(candles, 12);
-        Double twentySixEma = calculateEmaData(candles, 26);
-        String state;
-        if (twelveEma > twentySixEma) {
-            state = "bullish";
-        } else if (twelveEma < twentySixEma) {
-            state = "bearish";
-        } else {
-            state = "none";
+    public static EmaData calculateEmaData(List<CandleStickData> candles) {
+        Double tenEma = calculateEma(candles, 10);
+        Double twentyEma = calculateEma(candles, 20);
+
+        Direction direction = Direction.NONE;
+        if ( tenEma < twentyEma ) {
+            direction = Direction.BEARISH;
+        } else if ( tenEma > twentyEma ) {
+            direction = Direction.BULLISH;
         }
-        MacdData macdData = MacdData.builder().ema12(calculateEmaData(candles, 12)).ema26(calculateEmaData(candles, 26)).direction(state).confirmed(true).build();
+
+        return EmaData.builder()
+                .ema10(tenEma)
+                .ema20(twentyEma)
+                .direction(direction)
+                .confirmed(true)
+                .build();
+    }
+
+    public static MacdData calculateMacdData(List<CandleStickData> candles) {
+        Double twelveEma = calculateEma(candles, 12);
+        Double twentySixEma = calculateEma(candles, 26);
+        Direction direction = Direction.NONE;
+        if (twelveEma > twentySixEma) {
+            direction = Direction.BULLISH;
+        } else if (twelveEma < twentySixEma) {
+            direction = Direction.BEARISH;
+        }
+
+        MacdData macdData = MacdData.builder()
+                .ema12(calculateEma(candles, 12))
+                .ema26(calculateEma(candles, 26)).direction(direction)
+                .confirmed(true).build();
         return macdData;
     }
 
-    public static Double calculateRsiData(List<CandleStickData> candles) {
+    public static RsiData calculateRsiData(List<CandleStickData> candles) {
         int periodLength = 14;
         int lastBar = candles.size() - 1;
         int firstBar = lastBar - periodLength + 1;
@@ -68,7 +87,18 @@ public class TechnicalIndicatorHelper {
         double rs = aveGain / Math.abs(aveLoss);
         double rsi = 100 - 100 / (1 + rs);
 
-        return rsi;
+        // determine overbought / oversold
+        RsiState state = RsiState.NONE;
+        if (rsi < 35 ) {
+            state = RsiState.OVERSOLD;
+        } else if (rsi > 65 ) {
+            state = RsiState.OVERBOUGHT;
+        }
+
+        return RsiData.builder()
+                .value(rsi)
+                .state(state)
+                .build();
     }
 
 }

@@ -32,15 +32,6 @@ public class MacdController {
         List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), interval, period);
         MacdData macdData = TechnicalIndicatorHelper.calculateMacdData(candles);
 
-        // Construct MacdData
-        TokenRecord4h.MacdData token4hMacdData = TokenRecord4h.MacdData.builder()
-                .confirmed(macdData.isConfirmed())
-                .direction(macdData.getDirection())
-                .twelveEma(macdData.getEma12()).twentySixEma(macdData.getEma26()).build();
-
-        TokenRecord4h tokenRecord4h = TokenRecord4h.builder().id(symbol).macd(token4hMacdData).build();
-
-        tokenRecord4hRepository.save(tokenRecord4h);
         return ResponseEntity.ok(macdData.getDirection());
     }
 }

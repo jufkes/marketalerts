@@ -46,10 +46,5 @@ public class BinanceService {
         }
     }
 
-    public void processData(String symbol, String interval, Integer period) {
-        List<CandleStickData> candleStickData = getCandlesStickData(symbol, interval, period);
-
-    }
-
 }
 

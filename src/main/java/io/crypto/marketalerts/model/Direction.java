@@ -1,5 +1,5 @@
 package io.crypto.marketalerts.model;
 
 public enum Direction {
-    BULLISH,BEARISH
+    BULLISH,BEARISH,NONE
 }
