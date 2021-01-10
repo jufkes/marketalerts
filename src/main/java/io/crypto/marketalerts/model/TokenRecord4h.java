@@ -6,11 +6,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class TokenRecord4h extends TokenRecord {
+@Data
+@Builder
+public class TokenRecord4h {
 
-    @Builder
-    public TokenRecord4h(String id, MacdData macd, EmaData ema, RsiData rsi) {
-        super(id, macd, ema, rsi);
-    }
+    @Id
+    private String id;
+    private MacdData macd;
+    private EmaData ema;
+    private RsiData rsi;
 
 }

@@ -2,7 +2,6 @@ package io.crypto.marketalerts.controller;
 
 import io.crypto.marketalerts.helper.TechnicalIndicatorHelper;
 import io.crypto.marketalerts.model.CandleStickData;
-import io.crypto.marketalerts.model.Interval;
 import io.crypto.marketalerts.service.BinanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class SmaController {
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval, @RequestParam(value="period") Integer period) {
         // increment the period so that we get the right number of candles for processing
         period++;
-        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), Interval.valueOfLabel(interval), period);
+        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), interval, period);
         Double sma = TechnicalIndicatorHelper.calculateSmaData(candles, period);
         return ResponseEntity.ok(sma);
     }
