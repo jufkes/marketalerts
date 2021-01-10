@@ -12,28 +12,92 @@ public class TokenRecordRepositoryService {
 
     private final TokenRecordRepositoryFactory tokenRecordRepositoryFactory;
 
-    public void saveTokenRecord(String interval, String symbol, MacdData macd, RsiData rsi, EmaData ema) {
-        // TODO - make enum for interval
-        // TODO - implement intervals = 15m, 30m, 1h, 2h, 1d, 1w, 1mo
+    public void saveTokenRecord(Interval interval, String symbol, MacdData macd, RsiData rsi, EmaData ema) {
         MongoRepository tokenRecordRepository = tokenRecordRepositoryFactory.getTokenRecordRepository(interval);
-        if ("4h".equals(interval)) {
-            TokenRecord4h tokenRecord4h = TokenRecord4h.builder()
-                    .id(symbol)
-                    .macd(macd)
-                    .rsi(rsi)
-                    .ema(ema)
-                    .build();
-            tokenRecordRepository.save(tokenRecord4h);
-        } else if ("12h".equals(interval)) {
-            TokenRecord12h tokenRecord12h = TokenRecord12h.builder()
-                    .id(symbol)
-                    .macd(macd)
-                    .rsi(rsi)
-                    .ema(ema)
-                    .build();
-            tokenRecordRepository.save(tokenRecord12h);
-        } else {
-            throw new RuntimeException("No TokenRecord configured for interval: " + interval);
+        switch (interval) {
+            case MINUTE_15:
+                TokenRecord15m tokenRecord15m = TokenRecord15m.builder()
+                        .id(symbol)
+                        .macd(macd)
+                        .rsi(rsi)
+                        .ema(ema)
+                        .build();
+                tokenRecordRepository.save(tokenRecord15m);
+                break;
+            case MINUTE_30:
+                TokenRecord30m tokenRecord30m = TokenRecord30m.builder()
+                        .id(symbol)
+                        .macd(macd)
+                        .rsi(rsi)
+                        .ema(ema)
+                        .build();
+                tokenRecordRepository.save(tokenRecord30m);
+                break;
+            case HOUR_1:
+                TokenRecord1h tokenRecord1h = TokenRecord1h.builder()
+                        .id(symbol)
+                        .macd(macd)
+                        .rsi(rsi)
+                        .ema(ema)
+                        .build();
+                tokenRecordRepository.save(tokenRecord1h);
+                break;
+            case HOUR_2:
+                TokenRecord2h tokenRecord2h = TokenRecord2h.builder()
+                        .id(symbol)
+                        .macd(macd)
+                        .rsi(rsi)
+                        .ema(ema)
+                        .build();
+                tokenRecordRepository.save(tokenRecord2h);
+                break;
+            case HOUR_4:
+                TokenRecord4h tokenRecord4h = TokenRecord4h.builder()
+                        .id(symbol)
+                        .macd(macd)
+                        .rsi(rsi)
+                        .ema(ema)
+                        .build();
+                tokenRecordRepository.save(tokenRecord4h);
+                break;
+            case HOUR_12:
+                TokenRecord12h tokenRecord12h = TokenRecord12h.builder()
+                        .id(symbol)
+                        .macd(macd)
+                        .rsi(rsi)
+                        .ema(ema)
+                        .build();
+                tokenRecordRepository.save(tokenRecord12h);
+                break;
+            case DAY_1:
+                TokenRecord1d tokenRecord1d = TokenRecord1d.builder()
+                        .id(symbol)
+                        .macd(macd)
+                        .rsi(rsi)
+                        .ema(ema)
+                        .build();
+                tokenRecordRepository.save(tokenRecord1d);
+                break;
+            case WEEK_1:
+                TokenRecord1w tokenRecord1w = TokenRecord1w.builder()
+                        .id(symbol)
+                        .macd(macd)
+                        .rsi(rsi)
+                        .ema(ema)
+                        .build();
+                tokenRecordRepository.save(tokenRecord1w);
+                break;
+            case MONTH_1:
+                TokenRecord1mo tokenRecord1mo = TokenRecord1mo.builder()
+                        .id(symbol)
+                        .macd(macd)
+                        .rsi(rsi)
+                        .ema(ema)
+                        .build();
+                tokenRecordRepository.save(tokenRecord1mo);
+                break;
+            default:
+                throw new RuntimeException("No TokenRecord configured for interval: " + interval);
         }
 
     }

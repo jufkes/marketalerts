@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class TokenRecord4h extends TokenRecord {
 
     @Builder
-    public TokenRecord4h(String id, MacdData macd, EmaData ema,RsiData rsi) {
+    public TokenRecord4h(String id, MacdData macd, EmaData ema, RsiData rsi) {
         super(id, macd, ema, rsi);
     }
 

@@ -22,7 +22,7 @@ public class CalculationService {
      collections correlated to them. So for 15m data, it would save to the a tokenRecord15m etc etc
 
      period = the number of candles to retrieve. Could probably hard code this to 30 for now */
-    public void processData(String symbol, String interval, Integer period) {
+    public void processData(String symbol, Interval interval, Integer period) {
         List<CandleStickData> candleStickData = binanceService.getCandlesStickData(symbol, interval, period);
         RsiData rsi = TechnicalIndicatorHelper.calculateRsiData(candleStickData);
         MacdData macdData = TechnicalIndicatorHelper.calculateMacdData(candleStickData);
