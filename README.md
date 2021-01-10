@@ -13,7 +13,6 @@ docker run --name market-alerts -p 27017:27017 -d mongo:4.2.0
 
 Open in your favorite IDE. Setup java 11. Make sure to install lombok. Run it.
 
- 
 
 To access data from the service, call the following endpoints: 
 
@@ -31,6 +30,10 @@ http://localhost:8080/macddata?symbol=ETHUSDT&interval=4h
 | symbol | trade pair to return data on | ETHUSDT |
 | interval | kline interval to use | 4h (options: 15m, 30m, 1h, 12h, 24h) |
 | period | calculation value for moving averages | 10 |
+
+## Webhook configuration
+
+Update the discord.webhook param in the application.yaml with the discord webhook link.
 
 ## TODO
 

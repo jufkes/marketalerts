@@ -10,7 +10,6 @@ public class WebClientConfig {
     @Bean
     public WebClient getWebClient() {
 
-        //https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=27
         return WebClient
                 .builder()
                 .baseUrl("https://api.binance.com/api/v3/klines")

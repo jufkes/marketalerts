@@ -8,4 +8,6 @@ spring:
       port: 27017
       database: market-alerts
 
+discord:
+  webhook: ""
 
