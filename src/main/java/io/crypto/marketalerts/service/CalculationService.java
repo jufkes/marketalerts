@@ -2,7 +2,6 @@ package io.crypto.marketalerts.service;
 
 import io.crypto.marketalerts.helper.TechnicalIndicatorHelper;
 import io.crypto.marketalerts.model.*;
-import io.crypto.marketalerts.repository.TokenRecord4hRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ import java.util.List;
 public class CalculationService {
 
     private final BinanceService binanceService;
-    private final TokenRecord4hRepository tokenRecord4hRepository;
+    private final TokenRecordRepositoryService tokenRecordRepositoryService;
 
     /* symbol = coinpair to retrieve. Eventually this will be a list of things to work against
     for now, use ETHUSDT
@@ -28,13 +27,8 @@ public class CalculationService {
         RsiData rsi = TechnicalIndicatorHelper.calculateRsiData(candleStickData);
         MacdData macdData = TechnicalIndicatorHelper.calculateMacdData(candleStickData);
         EmaData emaData = TechnicalIndicatorHelper.calculateEmaData(candleStickData);
-        TokenRecord4h tokenRecord4h = TokenRecord4h.builder()
-                .id(symbol)
-                .macd(macdData)
-                .rsi(rsi)
-                .ema(emaData)
-                .build();
-        tokenRecord4hRepository.save(tokenRecord4h);
+
+        tokenRecordRepositoryService.saveTokenRecord(interval, symbol, macdData, rsi, emaData);
     }
 
 }
