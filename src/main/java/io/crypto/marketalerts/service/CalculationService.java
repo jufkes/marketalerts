@@ -17,7 +17,7 @@ public class CalculationService {
     /* symbol = coinpair to retrieve. Eventually this will be a list of things to work against
     for now, use ETHUSDT
 
-     intervals = 15m, 30m, 1h, 2h, 4h, 12h, 1d, 1w, 1mo
+     intervals = 15m, 30m, 1h, 2h, 4h, 12h, 1d, 1w, 1M
      - need to retrieve market data on these intervals on a schedule. Then save their data to
      collections correlated to them. So for 15m data, it would save to the a tokenRecord15m etc etc
 
