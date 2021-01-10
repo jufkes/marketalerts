@@ -13,6 +13,8 @@ public class TokenRecordRepositoryService {
     private final TokenRecordRepositoryFactory tokenRecordRepositoryFactory;
 
     public void saveTokenRecord(String interval, String symbol, MacdData macd, RsiData rsi, EmaData ema) {
+        // TODO - make enum for interval
+        // TODO - implement intervals = 15m, 30m, 1h, 2h, 1d, 1w, 1mo
         MongoRepository tokenRecordRepository = tokenRecordRepositoryFactory.getTokenRecordRepository(interval);
         if ("4h".equals(interval)) {
             TokenRecord4h tokenRecord4h = TokenRecord4h.builder()
