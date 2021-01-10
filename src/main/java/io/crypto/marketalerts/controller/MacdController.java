@@ -2,6 +2,7 @@ package io.crypto.marketalerts.controller;
 
 import io.crypto.marketalerts.helper.TechnicalIndicatorHelper;
 import io.crypto.marketalerts.model.CandleStickData;
+import io.crypto.marketalerts.model.Interval;
 import io.crypto.marketalerts.model.MacdData;
 import io.crypto.marketalerts.model.TokenRecord4h;
 import io.crypto.marketalerts.repository.TokenRecord4hRepository;
@@ -29,7 +30,7 @@ public class MacdController {
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval) {
         Integer period = 27;
 
-        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), interval, period);
+        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), Interval.valueOfLabel(interval), period);
         MacdData macdData = TechnicalIndicatorHelper.calculateMacdData(candles);
 
         return ResponseEntity.ok(macdData.getDirection());

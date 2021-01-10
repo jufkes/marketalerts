@@ -1,5 +1,6 @@
 package io.crypto.marketalerts.controller;
 
+import io.crypto.marketalerts.model.Interval;
 import io.crypto.marketalerts.service.BinanceService;
 import io.crypto.marketalerts.service.CalculationService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class CandleStickController {
 
     @GetMapping("/process")
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval, @RequestParam(value="period") Integer period) {
-        calculationService.processData(symbol.toUpperCase(), interval, period);
+        calculationService.processData(symbol.toUpperCase(), Interval.valueOfLabel(interval), period);
         return ResponseEntity.ok().build();
     }
 

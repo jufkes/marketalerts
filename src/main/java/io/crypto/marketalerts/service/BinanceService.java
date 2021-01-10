@@ -1,6 +1,7 @@
 package io.crypto.marketalerts.service;
 
 import io.crypto.marketalerts.model.CandleStickData;
+import io.crypto.marketalerts.model.Interval;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,10 +19,10 @@ public class BinanceService {
 
     private final WebClient webClient;
 
-    public List<CandleStickData> getCandlesStickData(String symbol, String interval, Integer period) {
+    public List<CandleStickData> getCandlesStickData(String symbol, Interval interval, Integer period) {
         List<ArrayList> data = webClient.get().uri(uriBuilder ->
                 uriBuilder.queryParam("symbol", symbol)
-                        .queryParam("interval", interval)
+                        .queryParam("interval", interval.getLabel())
                         .queryParam("limit", period).build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
