@@ -17,7 +17,7 @@ public class TokenRecordRepositoryFactory {
     private final TokenRecord12hRepository tokenRecord12hRepository;
     private final TokenRecord1dRepository tokenRecord1dRepository;
     private final TokenRecord1wRepository tokenRecord1wRepository;
-    private final TokenRecord1moRepository tokenRecord1moRepository;
+    private final TokenRecord1MRepository tokenRecord1MRepository;
 
     public MongoRepository getTokenRecordRepository(Interval interval) {
         switch (interval) {
@@ -38,7 +38,7 @@ public class TokenRecordRepositoryFactory {
             case WEEK_1:
                 return tokenRecord1wRepository;
             case MONTH_1:
-                return tokenRecord1moRepository;
+                return tokenRecord1MRepository;
             default:
                 throw new RuntimeException("No TokenRecordRepository configured for interval: " + interval);
         }

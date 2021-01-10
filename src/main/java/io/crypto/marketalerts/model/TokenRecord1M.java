@@ -4,10 +4,10 @@ import lombok.Builder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class TokenRecord1mo extends TokenRecord {
+public class TokenRecord1M extends TokenRecord {
 
     @Builder
-    public TokenRecord1mo(String id, MacdData macd, EmaData ema, RsiData rsi) {
+    public TokenRecord1M(String id, MacdData macd, EmaData ema, RsiData rsi) {
         super(id, macd, ema, rsi);
     }
 

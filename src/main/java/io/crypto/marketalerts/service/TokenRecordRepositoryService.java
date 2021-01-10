@@ -88,13 +88,13 @@ public class TokenRecordRepositoryService {
                 tokenRecordRepository.save(tokenRecord1w);
                 break;
             case MONTH_1:
-                TokenRecord1mo tokenRecord1mo = TokenRecord1mo.builder()
+                TokenRecord1M tokenRecord1M = TokenRecord1M.builder()
                         .id(symbol)
                         .macd(macd)
                         .rsi(rsi)
                         .ema(ema)
                         .build();
-                tokenRecordRepository.save(tokenRecord1mo);
+                tokenRecordRepository.save(tokenRecord1M);
                 break;
             default:
                 throw new RuntimeException("No TokenRecord configured for interval: " + interval);
