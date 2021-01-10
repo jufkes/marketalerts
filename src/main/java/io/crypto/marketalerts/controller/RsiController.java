@@ -2,7 +2,6 @@ package io.crypto.marketalerts.controller;
 
 import io.crypto.marketalerts.helper.TechnicalIndicatorHelper;
 import io.crypto.marketalerts.model.CandleStickData;
-import io.crypto.marketalerts.model.Interval;
 import io.crypto.marketalerts.model.RsiData;
 import io.crypto.marketalerts.service.BinanceService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class RsiController {
     @GetMapping("/rsidata")
     public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval) {
         Integer period = 14;
-        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), Interval.valueOfLabel(interval), period);
+        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), interval, period);
         RsiData rsi = TechnicalIndicatorHelper.calculateRsiData(candles);
         return ResponseEntity.ok(rsi);
     }
