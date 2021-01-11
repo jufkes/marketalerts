@@ -38,10 +38,8 @@ Update the discord.webhook param in the application.yaml with the discord webhoo
 ## TODO
 
 * kubernetes setup
-* jenkins build (or github actions) 
 * flux setup (github build trigger)
 * sweep high / low alerts
-* discord integration
 
 ## Binance websocket info:
 
