@@ -1,5 +1,6 @@
 package io.crypto.marketalerts.controller;
 
+import io.crypto.marketalerts.model.DiscordMessage;
 import io.crypto.marketalerts.service.DiscordAlertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,18 +21,19 @@ public class DiscordTestController {
 
     @GetMapping("/discord")
     public ResponseEntity sendMessage() throws IOException {
-        discordAlertService.setContent("Test");
-        discordAlertService.setAvatarUrl("https://cdn.arstechnica.net/wp-content/uploads/2019/11/6bb83d91-bd51-49c7-b054-550f5af8dc53.jpg");
-        discordAlertService.setUsername("BananaPants");
-        discordAlertService.setTts(true);
-        discordAlertService.addEmbed(new DiscordAlertService.EmbedObject()
-                .setTitle("A test")
-                .setDescription("Something happened")
-                .setColor(Color.BLUE)
-                .addField("Heres stuff", "Inline", true)
-                .setThumbnail("https://www.brandeps.com/logo-download/E/Ethereum-logo-vector-01.svg")
-        );
-        discordAlertService.execute();
+        // Build message - content or embeds is required
+        DiscordMessage message = DiscordMessage.builder()
+                .content("Test")
+                .embeds(List.of(DiscordMessage.EmbedObject.builder()
+                        .title("A test")
+                        .description("Something happened")
+                        .color(Color.BLUE)
+                        .fields(List.of(new DiscordMessage.EmbedObject.Field("Here's stuff", "Inline", true)))
+                        .build()))
+                .build();
+
+        discordAlertService.sendMessage(message);
+
         return ResponseEntity.ok().build();
     }
 }
