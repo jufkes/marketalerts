@@ -27,8 +27,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: portr.ctl.io
-          #username: chaser
-          #password: ${{ secrets.PORTR_PASSWORD }}
+          username: chaser
+          password: ${{ secrets.PORTR_PASSWORD }}
 
       - name: Build and push
         id: docker_build
