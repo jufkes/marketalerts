@@ -31,12 +31,8 @@ jobs:
           username: ${{ secrets.PORTR_USERNAME }}
           password: ${{ secrets.PORTR_PASSWORD }}
 
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: portr.ctl.io/private/marketalerts:actionstest
+      - name: Build Docker image
+        run: docker build -t portr.ctl.io/private/marketalerts:${GITHUB_SHA::8} .
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Publish Docker image
+        run: docker push portr.ctl.io/private/marketalerts:${GITHUB_SHA::8}
