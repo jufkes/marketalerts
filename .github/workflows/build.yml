@@ -34,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: portr.ctl.io/private/marketalerts:${{ GITHUB_SHA }}
+          tags: portr.ctl.io/private/marketalerts:${GITHUB_SHA::8}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
