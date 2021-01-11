@@ -5,6 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: portr
 
     steps:
       - uses: actions/checkout@v2
@@ -23,15 +24,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Login to GitHub Package Registry
-        run: echo "${{ secrets.PORTR_PASSWORD }}" | docker login portr.ctl.io -u "${{ secrets.PORTR_USERNAME }}" --password-stdin
-
-#      - name: Login to DockerHub
-#        uses: docker/login-action@v1
-#        with:
-#          registry: portr.ctl.io
-#          username: chaser
-#          password: ${{ secrets.PORTR_PASSWORD }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          registry: portr.ctl.io
+          username: ${{ secrets.PORTR_USERNAME }}
+          password: ${{ secrets.PORTR_PASSWORD }}
 
       - name: Build and push
         id: docker_build
