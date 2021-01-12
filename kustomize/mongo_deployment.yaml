@@ -6,11 +6,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      key: mongo
+      app: mongo
   template:
     metadata:
       labels:
-        key: mongo
+        app: mongo
     spec:
       securityContext:
         runAsUser: 999
