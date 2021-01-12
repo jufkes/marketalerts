@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mongo-data
-  namespace: market-alerts
+  namespace: marketalerts
 spec:
   accessModes:
     - ReadWriteOnce
