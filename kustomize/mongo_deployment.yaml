@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongodb
+  namespace: marketalerts
 spec:
   selector:
     matchLabels:
@@ -19,16 +20,6 @@ spec:
         image: mongo:4.2.0
         imagePullPolicy: IfNotPresent
         env:
-        - name: MONGO_INITDB_ROOT_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: mongo-credentials
-              key: mongo_root_user
-        - name: MONGO_INITDB_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mongo-credentials
-              key: mongo_root_password
         - name: MONGO_INITDB_DATABASE
           value: marketalerts
         - name: HOSTIP

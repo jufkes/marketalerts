@@ -19,21 +19,25 @@ spec:
       - name: marketalerts-api
         image: ubuntu
         imagePullPolicy: IfNotPresent
-        # envFrom:
-        #   - secretRef:
-        #       name: marketalerts-keys
         ports:
           - containerPort: 8080
         command:
           - sleep
           - "500000"
-        # volumeMounts:
-        #   - mountPath: /application.yaml
-        #     name: application-yaml
-        #     subPath: application.yaml
-        #     readOnly: true
-    # volumes:
-    #   - name: application-yaml
-    #     configMap:
-    #       defaultMode: 420
-    #       name: marketalerts-appyaml
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        volumeMounts:
+          - mountPath: /application.yaml
+            name: application-yaml
+            subPath: application.yaml
+            readOnly: true
+    volumes:
+      - name: application-yaml
+        configMap:
+          defaultMode: 420
+          name: marketalerts-appyaml

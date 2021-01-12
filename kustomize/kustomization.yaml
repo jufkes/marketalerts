@@ -4,3 +4,8 @@ resources:
   - namespace.yaml
   - service.yaml
   - deployment.yaml
+  - application_config.yaml
+  - mongo_deployment.yaml
+  - mongo_pvc.yaml
+  - mongo_service.yaml
+  - mongo_config.yaml
