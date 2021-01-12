@@ -36,8 +36,8 @@ spec:
             name: application-yaml
             subPath: application.yaml
             readOnly: true
-    volumes:
-      - name: application-yaml
-        configMap:
-          defaultMode: 420
-          name: marketalerts-appyaml
+      volumes:
+        - name: application-yaml
+          configMap:
+            defaultMode: 420
+            name: marketalerts-appyaml
