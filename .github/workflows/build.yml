@@ -19,7 +19,7 @@ jobs:
         run: mvn clean install
 
       - name: Build Docker image
-        run: docker build -t portr.ctl.io/private/marketalerts:1.0.${GITHUB_SHA::8} .
+        run: docker build -t portr.ctl.io/private/marketalerts:1.0.1 .
 
       - name: Publish latest image
-        run: portr.ctl.io/private/marketalerts:1.0.${GITHUB_SHA::8}
+        run: portr.ctl.io/private/marketalerts:1.0.1
