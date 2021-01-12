@@ -33,6 +33,12 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t portr.ctl.io/private/marketalerts:${GITHUB_SHA::8} .
+      
+      - name: Tag to latest
+        run: docker tag portr.ctl.io/private/marketalerts:${GITHUB_SHA::8} portr.ctl.io/private/marketalerts:latest
 
       - name: Publish Docker image
         run: docker push portr.ctl.io/private/marketalerts:${GITHUB_SHA::8}
+
+      - name: Publish latest image
+        run: portr.ctl.io/private/marketalerts:latest
