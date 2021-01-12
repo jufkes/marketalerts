@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.PORTR_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t portr.ctl.io/private/marketalerts .
+        run: docker build -t portr.ctl.io/private/marketalerts:1.0.${GITHUB_SHA::8} .
 
       - name: Publish latest image
-        run: portr.ctl.io/private/marketalerts
+        run: portr.ctl.io/private/marketalerts:1.0.${GITHUB_SHA::8}

@@ -9,5 +9,5 @@ spec:
     name: marketalerts
   policy:
     semver:
-      range: latest
+      range: 1.0.x
 
