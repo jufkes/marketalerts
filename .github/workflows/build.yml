@@ -18,9 +18,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
-      - name: Login to DockerHub
-        run: docker login portr.ctl.io ${{ secrets.PORTR_USERNAME }} ${{ secrets.PORTR_PASSWORD }}
-
       - name: Build Docker image
         run: docker build -t portr.ctl.io/private/marketalerts:1.0.${GITHUB_SHA::8} .
 
