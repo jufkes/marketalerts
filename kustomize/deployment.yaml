@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketalerts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      key: marketalerts
+  template:
+    metadata:
+      labels:
+        key: marketalerts
+    spec:
+      securityContext:
+        runAsUser: 0
+      containers:
+        - name: marketalerts-api
+          image: ubuntu
+          imagePullPolicy: IfNotPresent
+          # envFrom:
+          #   - secretRef:
+          #       name: marketalerts-keys
+          ports:
+            - containerPort: 8080
+          # volumeMounts:
+          #   - mountPath: /application.yaml
+          #     name: application-yaml
+          #     subPath: application.yaml
+          #     readOnly: true
+      # volumes:
+      #   - name: application-yaml
+      #     configMap:
+      #       defaultMode: 420
+      #       name: marketalerts-appyaml
