@@ -9,7 +9,7 @@ spec:
   path: ./kustomize
   prune: true
   sourceRef:
-    kind: ""
-    name: ""
+    kind: GitRepository
+    name: marketalerts
   validation: client
 
