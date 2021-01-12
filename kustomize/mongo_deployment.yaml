@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  selector:
+    matchLabels:
+      key: mongo
+  template:
+    metadata:
+      labels:
+        key: mongo
+    spec:
+      securityContext:
+        runAsUser: 999
+        fsGroup: 999
+      containers:
+      - name: mongodb
+        image: mongo:4.2.0
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-credentials
+              key: mongo_root_user
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-credentials
+              key: mongo_root_password
+        - name: MONGO_INITDB_DATABASE
+          value: marketalerts
+        - name: HOSTIP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        command:
+          - mongod
+          - "--config"
+          - "/etc/mongod.conf"
+        ports:
+          - name: mongodb
+            containerPort: 27017
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        livenessProbe:
+          exec:
+            command:
+              - mongo
+              - --eval
+              - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 1
+        readinessProbe:
+          exec:
+            command:
+              - mongo
+              - --eval
+              - "db.adminCommand('ping')"
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 1
+        volumeMounts:
+          - name: data
+            mountPath: /data/db
+          - name: config
+            mountPath: /etc/mongod.conf
+            subPath: mongod.conf
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mongo-data
+        - name: config
+          configMap:
+            name: mongo-config
