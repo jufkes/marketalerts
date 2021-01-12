@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.PORTR_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t portr.ctl.io/private/marketalerts:latest .
+        run: docker build -t portr.ctl.io/private/marketalerts .
 
       - name: Publish latest image
-        run: portr.ctl.io/private/marketalerts:latest
+        run: portr.ctl.io/private/marketalerts
