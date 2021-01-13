@@ -22,4 +22,4 @@ jobs:
         run: docker build -t portr.ctl.io/private/marketalerts:1.0.1 .
 
       - name: Publish latest image
-        run: portr.ctl.io/private/marketalerts:1.0.1
+        run: docker push portr.ctl.io/private/marketalerts:1.0.1
