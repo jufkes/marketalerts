@@ -37,8 +37,6 @@ Update the discord.webhook param in the application.yaml with the discord webhoo
 
 ## TODO
 
-* kubernetes setup
-* flux setup (github build trigger)
 * sweep high / low alerts
 
 ## Binance websocket info:
@@ -55,3 +53,30 @@ send a subscriber payload of:
 ],
 "id": 1
 }```
+
+## CICD
+
+In order to deploy this to the cluster, the image tag needs to be incremented to a new version.
+
+To accomplish that, update the tag on line 20 in this file:
+
+./kustomize/deployment.yaml
+
+Example: 
+```
+image: portr.ctl.io/private/marketalerts:1.0.1
+```
+
+Then use the same ID as the build tag in github Actions workflow here: .github/workflows/build.yml
+
+Lines 22 and 25
+
+```
+- name: Build Docker image
+  run: docker build -t portr.ctl.io/private/marketalerts:1.0.1 .
+
+- name: Publish latest image
+  run: docker push portr.ctl.io/private/marketalerts:1.0.1
+```
+
+Flux should handle the updating of the image in the cluster.
