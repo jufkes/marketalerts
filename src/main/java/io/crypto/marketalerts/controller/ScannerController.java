@@ -1,6 +1,6 @@
 package io.crypto.marketalerts.controller;
 
-import io.crypto.marketalerts.model.Scanner;
+import io.crypto.marketalerts.model.EmaScanner;
 import io.crypto.marketalerts.service.ScannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class ScannerController {
     private final ScannerService scannerService;
 
     @GetMapping("/ema")
-    public ResponseEntity<List<Scanner>> getEma() {
+    public ResponseEntity<List<EmaScanner>> getEma() {
         return ResponseEntity.ok(scannerService.getEmas());
     }
 

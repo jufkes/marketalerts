@@ -1,17 +1,18 @@
 package io.crypto.marketalerts.service;
 
-import io.crypto.marketalerts.model.Scanner;
+import io.crypto.marketalerts.model.EmaScanner;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ScannerService {
 
-    public List<Scanner> getEmas() {
-        return List.of(
-                Scanner.builder().symbol("FOO").build(),
-                Scanner.builder().symbol("BAR").build()
-        );
+    private final TokenRecordRepositoryService tokenRecordRepositoryService;
+
+    public List<EmaScanner> getEmas() {
+        return tokenRecordRepositoryService.getEmas();
     }
 }
