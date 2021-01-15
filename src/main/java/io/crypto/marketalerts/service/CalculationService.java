@@ -31,4 +31,9 @@ public class CalculationService {
         tokenRecordRepositoryService.saveTokenRecord(interval, symbol, macdData, rsi, emaData);
     }
 
+    public static Double calculateTradeSize(Double balance, Double risk, Double entry, Double stop) {
+        Double percentLoss = (entry - stop) * 0.001;
+        return (balance * (risk * 0.001)) / (Math.abs(percentLoss));
+    }
+
 }
