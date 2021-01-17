@@ -21,6 +21,7 @@ public class ScannerController {
 
     @GetMapping("/ema")
     public ResponseEntity<List<EmaScanner>> getEma() {
+
         return ResponseEntity.ok(scannerService.getEmas());
     }
 
