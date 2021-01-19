@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class TokenRecordRepositoryService {
@@ -100,6 +103,116 @@ public class TokenRecordRepositoryService {
                 throw new RuntimeException("No TokenRecord configured for interval: " + interval);
         }
 
+    }
+
+    public List<EmaScanner> getEmas() {
+        Map<String, EmaScanner> scannerMap = new HashMap<>();
+        List.of(Interval.values()).forEach(interval -> {
+            MongoRepository tokenRecordRepository = tokenRecordRepositoryFactory.getTokenRecordRepository(interval);
+            List<TokenRecord> records = tokenRecordRepository.findAll();
+            updateScannerMap(interval, scannerMap, records);
+        });
+
+        return new ArrayList<>(scannerMap.values());
+    }
+
+    private Map<String, EmaScanner> updateScannerMap(Interval interval, Map<String, EmaScanner> scannerMap, List<TokenRecord> records) {
+        switch (interval) {
+            case MINUTE_15:
+                records.forEach(record -> {
+                    EmaScanner emaScanner = scannerMap.get(record.getId());
+                    if (emaScanner == null) {
+                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    }
+                    emaScanner.setMinute15(record.getEma().getDirection());
+                    scannerMap.put(record.getId(), emaScanner);
+                });
+                break;
+            case MINUTE_30:
+                records.forEach(record -> {
+                    EmaScanner emaScanner = scannerMap.get(record.getId());
+                    if (emaScanner == null) {
+                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    }
+                    emaScanner.setMinute30(record.getEma().getDirection());
+                    scannerMap.put(record.getId(), emaScanner);
+                });
+                break;
+            case HOUR_1:
+                records.forEach(record -> {
+                    EmaScanner emaScanner = scannerMap.get(record.getId());
+                    if (emaScanner == null) {
+                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    }
+                    emaScanner.setHour1(record.getEma().getDirection());
+                    scannerMap.put(record.getId(), emaScanner);
+                });
+                break;
+            case HOUR_2:
+                records.forEach(record -> {
+                    EmaScanner emaScanner = scannerMap.get(record.getId());
+                    if (emaScanner == null) {
+                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    }
+                    emaScanner.setHour2(record.getEma().getDirection());
+                    scannerMap.put(record.getId(), emaScanner);
+                });
+                break;
+            case HOUR_4:
+                records.forEach(record -> {
+                    EmaScanner emaScanner = scannerMap.get(record.getId());
+                    if (emaScanner == null) {
+                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    }
+                    emaScanner.setHour4(record.getEma().getDirection());
+                    scannerMap.put(record.getId(), emaScanner);
+                });
+                break;
+            case HOUR_12:
+                records.forEach(record -> {
+                    EmaScanner emaScanner = scannerMap.get(record.getId());
+                    if (emaScanner == null) {
+                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    }
+                    emaScanner.setHour12(record.getEma().getDirection());
+                    scannerMap.put(record.getId(), emaScanner);
+                });
+                break;
+            case DAY_1:
+                records.forEach(record -> {
+                    EmaScanner emaScanner = scannerMap.get(record.getId());
+                    if (emaScanner == null) {
+                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    }
+                    emaScanner.setDay1(record.getEma().getDirection());
+                    scannerMap.put(record.getId(), emaScanner);
+                });
+                break;
+            case WEEK_1:
+                records.forEach(record -> {
+                    EmaScanner emaScanner = scannerMap.get(record.getId());
+                    if (emaScanner == null) {
+                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    }
+                    emaScanner.setWeek1(record.getEma().getDirection());
+                    scannerMap.put(record.getId(), emaScanner);
+                });
+                break;
+            case MONTH_1:
+                records.forEach(record -> {
+                    EmaScanner emaScanner = scannerMap.get(record.getId());
+                    if (emaScanner == null) {
+                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    }
+                    emaScanner.setMonth1(record.getEma().getDirection());
+                    scannerMap.put(record.getId(), emaScanner);
+                });
+                break;
+            default:
+                throw new RuntimeException("No TokenRecord configured for interval: " + interval);
+
+        }
+        return scannerMap;
     }
 
 }
