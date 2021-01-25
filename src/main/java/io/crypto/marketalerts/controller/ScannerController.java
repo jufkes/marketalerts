@@ -1,7 +1,7 @@
 package io.crypto.marketalerts.controller;
 
 import io.crypto.marketalerts.exception.ResourceNotFoundException;
-import io.crypto.marketalerts.model.EmaScanner;
+import io.crypto.marketalerts.model.ScannerData;
 import io.crypto.marketalerts.model.UpdateAlertRequest;
 import io.crypto.marketalerts.service.ScannerService;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +20,13 @@ public class ScannerController {
     private final ScannerService scannerService;
 
     @GetMapping("/ema")
-    public ResponseEntity<List<EmaScanner>> getEma() {
-
+    public ResponseEntity<List<ScannerData>> getEma() {
         return ResponseEntity.ok(scannerService.getEmas());
+    }
+
+    @GetMapping("/macd")
+    public ResponseEntity<List<ScannerData>> getMacd() {
+        return ResponseEntity.ok(scannerService.getMacds());
     }
 
     @PutMapping("/alerts")

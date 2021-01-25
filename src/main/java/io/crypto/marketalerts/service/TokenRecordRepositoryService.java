@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -148,12 +149,23 @@ public class TokenRecordRepositoryService {
 
     }
 
-    public List<EmaScanner> getEmas() {
-        Map<String, EmaScanner> scannerMap = new HashMap<>();
+    public List<ScannerData> getEmas() {
+        Map<String, ScannerData> scannerMap = new HashMap<>();
         List.of(Interval.values()).forEach(interval -> {
             MongoRepository tokenRecordRepository = tokenRecordRepositoryFactory.getTokenRecordRepository(interval);
             List<TokenRecord> records = tokenRecordRepository.findAll();
-            updateScannerMap(interval, scannerMap, records);
+            updateScannerMap(interval, scannerMap, records, (TokenRecord tokenRecord) -> tokenRecord.getEma().getDirection());
+        });
+
+        return new ArrayList<>(scannerMap.values());
+    }
+
+    public List<ScannerData> getMacds() {
+        Map<String, ScannerData> scannerMap = new HashMap<>();
+        List.of(Interval.values()).forEach(interval -> {
+            MongoRepository tokenRecordRepository = tokenRecordRepositoryFactory.getTokenRecordRepository(interval);
+            List<TokenRecord> records = tokenRecordRepository.findAll();
+            updateScannerMap(interval, scannerMap, records, (TokenRecord tokenRecord) -> tokenRecord.getMacd().getDirection());
         });
 
         return new ArrayList<>(scannerMap.values());
@@ -170,96 +182,96 @@ public class TokenRecordRepositoryService {
         tokenRecordRepository.save(record);
     }
 
-    private Map<String, EmaScanner> updateScannerMap(Interval interval, Map<String, EmaScanner> scannerMap, List<TokenRecord> records) {
+    private Map<String, ScannerData> updateScannerMap(Interval interval, Map<String, ScannerData> scannerMap, List<TokenRecord> records, Function<TokenRecord, Direction> getDirection) {
         switch (interval) {
             case MINUTE_15:
                 records.forEach(record -> {
-                    EmaScanner emaScanner = scannerMap.get(record.getId());
-                    if (emaScanner == null) {
-                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    ScannerData scannerData = scannerMap.get(record.getId());
+                    if (scannerData == null) {
+                        scannerData = ScannerData.builder().symbol(record.getId()).build();
                     }
-                    emaScanner.setMinute15(record.getEma().getDirection());
-                    scannerMap.put(record.getId(), emaScanner);
+                    scannerData.setMinute15(getDirection.apply(record));
+                    scannerMap.put(record.getId(), scannerData);
                 });
                 break;
             case MINUTE_30:
                 records.forEach(record -> {
-                    EmaScanner emaScanner = scannerMap.get(record.getId());
-                    if (emaScanner == null) {
-                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    ScannerData scannerData = scannerMap.get(record.getId());
+                    if (scannerData == null) {
+                        scannerData = ScannerData.builder().symbol(record.getId()).build();
                     }
-                    emaScanner.setMinute30(record.getEma().getDirection());
-                    scannerMap.put(record.getId(), emaScanner);
+                    scannerData.setMinute30(getDirection.apply(record));
+                    scannerMap.put(record.getId(), scannerData);
                 });
                 break;
             case HOUR_1:
                 records.forEach(record -> {
-                    EmaScanner emaScanner = scannerMap.get(record.getId());
-                    if (emaScanner == null) {
-                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    ScannerData scannerData = scannerMap.get(record.getId());
+                    if (scannerData == null) {
+                        scannerData = ScannerData.builder().symbol(record.getId()).build();
                     }
-                    emaScanner.setHour1(record.getEma().getDirection());
-                    scannerMap.put(record.getId(), emaScanner);
+                    scannerData.setHour1(getDirection.apply(record));
+                    scannerMap.put(record.getId(), scannerData);
                 });
                 break;
             case HOUR_2:
                 records.forEach(record -> {
-                    EmaScanner emaScanner = scannerMap.get(record.getId());
-                    if (emaScanner == null) {
-                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    ScannerData scannerData = scannerMap.get(record.getId());
+                    if (scannerData == null) {
+                        scannerData = ScannerData.builder().symbol(record.getId()).build();
                     }
-                    emaScanner.setHour2(record.getEma().getDirection());
-                    scannerMap.put(record.getId(), emaScanner);
+                    scannerData.setHour2(getDirection.apply(record));
+                    scannerMap.put(record.getId(), scannerData);
                 });
                 break;
             case HOUR_4:
                 records.forEach(record -> {
-                    EmaScanner emaScanner = scannerMap.get(record.getId());
-                    if (emaScanner == null) {
-                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    ScannerData scannerData = scannerMap.get(record.getId());
+                    if (scannerData == null) {
+                        scannerData = ScannerData.builder().symbol(record.getId()).build();
                     }
-                    emaScanner.setHour4(record.getEma().getDirection());
-                    scannerMap.put(record.getId(), emaScanner);
+                    scannerData.setHour4(getDirection.apply(record));
+                    scannerMap.put(record.getId(), scannerData);
                 });
                 break;
             case HOUR_12:
                 records.forEach(record -> {
-                    EmaScanner emaScanner = scannerMap.get(record.getId());
-                    if (emaScanner == null) {
-                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    ScannerData scannerData = scannerMap.get(record.getId());
+                    if (scannerData == null) {
+                        scannerData = ScannerData.builder().symbol(record.getId()).build();
                     }
-                    emaScanner.setHour12(record.getEma().getDirection());
-                    scannerMap.put(record.getId(), emaScanner);
+                    scannerData.setHour12(getDirection.apply(record));
+                    scannerMap.put(record.getId(), scannerData);
                 });
                 break;
             case DAY_1:
                 records.forEach(record -> {
-                    EmaScanner emaScanner = scannerMap.get(record.getId());
-                    if (emaScanner == null) {
-                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    ScannerData scannerData = scannerMap.get(record.getId());
+                    if (scannerData == null) {
+                        scannerData = ScannerData.builder().symbol(record.getId()).build();
                     }
-                    emaScanner.setDay1(record.getEma().getDirection());
-                    scannerMap.put(record.getId(), emaScanner);
+                    scannerData.setDay1(getDirection.apply(record));
+                    scannerMap.put(record.getId(), scannerData);
                 });
                 break;
             case WEEK_1:
                 records.forEach(record -> {
-                    EmaScanner emaScanner = scannerMap.get(record.getId());
-                    if (emaScanner == null) {
-                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    ScannerData scannerData = scannerMap.get(record.getId());
+                    if (scannerData == null) {
+                        scannerData = ScannerData.builder().symbol(record.getId()).build();
                     }
-                    emaScanner.setWeek1(record.getEma().getDirection());
-                    scannerMap.put(record.getId(), emaScanner);
+                    scannerData.setWeek1(getDirection.apply(record));
+                    scannerMap.put(record.getId(), scannerData);
                 });
                 break;
             case MONTH_1:
                 records.forEach(record -> {
-                    EmaScanner emaScanner = scannerMap.get(record.getId());
-                    if (emaScanner == null) {
-                        emaScanner = EmaScanner.builder().symbol(record.getId()).build();
+                    ScannerData scannerData = scannerMap.get(record.getId());
+                    if (scannerData == null) {
+                        scannerData = ScannerData.builder().symbol(record.getId()).build();
                     }
-                    emaScanner.setMonth1(record.getEma().getDirection());
-                    scannerMap.put(record.getId(), emaScanner);
+                    scannerData.setMonth1(getDirection.apply(record));
+                    scannerMap.put(record.getId(), scannerData);
                 });
                 break;
             default:

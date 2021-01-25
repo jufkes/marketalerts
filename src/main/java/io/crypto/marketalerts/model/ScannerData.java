@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class EmaScanner {
+public class ScannerData {
     private String symbol;
     private Direction minute15;
     private Direction minute30;

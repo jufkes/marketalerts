@@ -1,6 +1,5 @@
 package io.crypto.marketalerts.service;
 
-import io.crypto.marketalerts.exception.ResourceNotFoundException;
 import io.crypto.marketalerts.model.*;
 import io.crypto.marketalerts.repository.AlertRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +16,12 @@ public class ScannerService {
     private final TokenRecordRepositoryService tokenRecordRepositoryService;
     private final AlertRepository alertRepository;
 
-    public List<EmaScanner> getEmas() {
+    public List<ScannerData> getEmas() {
         return tokenRecordRepositoryService.getEmas();
+    }
+
+    public List<ScannerData> getMacds() {
+        return tokenRecordRepositoryService.getMacds();
     }
 
     public void updateAlert(UpdateAlertRequest request) {
