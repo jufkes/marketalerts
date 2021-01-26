@@ -1,5 +1,6 @@
 package io.crypto.marketalerts.service;
 
+import io.crypto.marketalerts.helper.SymbolHelper;
 import io.crypto.marketalerts.helper.TechnicalIndicatorHelper;
 import io.crypto.marketalerts.model.*;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ public class CalculationService {
 
     private final BinanceService binanceService;
     private final TokenRecordRepositoryService tokenRecordRepositoryService;
+    private final SymbolHelper symbolHelper;
 
     /* symbol = coinpair to retrieve. Eventually this will be a list of things to work against
     for now, use ETHUSDT
@@ -29,6 +31,13 @@ public class CalculationService {
         EmaData emaData = TechnicalIndicatorHelper.calculateEmaData(candleStickData);
 
         tokenRecordRepositoryService.saveTokenRecord(interval, symbol, macdData, rsi, emaData);
+    }
+
+    public void getDataForAllSymbols(Interval interval) {
+        List<String> symbols = symbolHelper.getSymbolsFromFile();
+        symbols.forEach(symbol -> {
+            processData(symbol, interval, 27);
+        });
     }
 
     public static Double calculateTradeSize(Double balance, Double risk, Double entry, Double stop) {
