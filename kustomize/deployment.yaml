@@ -17,7 +17,7 @@ spec:
         runAsUser: 0
       containers:
       - name: marketalerts-api
-        image: portr.ctl.io/private/marketalerts:1.0.8
+        image: portr.ctl.io/private/marketalerts:1.0.9
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 8080

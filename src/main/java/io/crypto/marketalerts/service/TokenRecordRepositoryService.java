@@ -171,18 +171,7 @@ public class TokenRecordRepositoryService {
         return new ArrayList<>(scannerMap.values());
     }
 
-    public TokenRecord getTokenRecord(Interval interval, String symbol) {
-        MongoRepository tokenRecordRepository = tokenRecordRepositoryFactory.getTokenRecordRepository(interval);
-        Optional<TokenRecord> tokenRecord = tokenRecordRepository.findById(symbol);
-        return tokenRecord.orElse(null);
-    }
-
-    public void saveTokenRecord(Interval interval, TokenRecord record) {
-        MongoRepository tokenRecordRepository = tokenRecordRepositoryFactory.getTokenRecordRepository(interval);
-        tokenRecordRepository.save(record);
-    }
-
-    private Map<String, ScannerData> updateScannerMap(Interval interval, Map<String, ScannerData> scannerMap, List<TokenRecord> records, Function<TokenRecord, Direction> getDirection) {
+    private void updateScannerMap(Interval interval, Map<String, ScannerData> scannerMap, List<TokenRecord> records, Function<TokenRecord, Direction> getDirection) {
         switch (interval) {
             case MINUTE_15:
                 records.forEach(record -> {
@@ -278,7 +267,13 @@ public class TokenRecordRepositoryService {
                 throw new RuntimeException("No TokenRecord configured for interval: " + interval);
 
         }
-        return scannerMap;
+    }
+
+    public void deleteRecordsForSymbol(String name) {
+        List.of(Interval.values()).forEach(interval -> {
+            MongoRepository tokenRecordRepository = tokenRecordRepositoryFactory.getTokenRecordRepository(interval);
+            tokenRecordRepository.deleteById(name);
+        });
     }
 
 }
