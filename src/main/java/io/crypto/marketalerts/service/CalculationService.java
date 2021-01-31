@@ -1,12 +1,14 @@
 package io.crypto.marketalerts.service;
 
-import io.crypto.marketalerts.helper.SymbolHelper;
 import io.crypto.marketalerts.helper.TechnicalIndicatorHelper;
 import io.crypto.marketalerts.model.*;
+import io.crypto.marketalerts.model.symbol.Symbol;
+import io.crypto.marketalerts.repository.SymbolRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +16,7 @@ public class CalculationService {
 
     private final BinanceService binanceService;
     private final TokenRecordRepositoryService tokenRecordRepositoryService;
-    private final SymbolHelper symbolHelper;
+    private final SymbolRepository symbolRepository;
 
     /* symbol = coinpair to retrieve. Eventually this will be a list of things to work against
     for now, use ETHUSDT
@@ -34,7 +36,7 @@ public class CalculationService {
     }
 
     public void getDataForAllSymbols(Interval interval) {
-        List<String> symbols = symbolHelper.getSymbolsFromFile();
+        List<String> symbols = symbolRepository.findAll().stream().map(Symbol::getId).collect(Collectors.toList());
         symbols.forEach(symbol -> {
             processData(symbol, interval, 27);
         });
