@@ -11,4 +11,8 @@ spring:
 discord:
   webhook: ""
 
-schedule.enabled: true
+schedule.enabled: false
+
+websocket:
+  enabled: true
+  url: wss://stream.binance.com:9443/ws/marketalerts

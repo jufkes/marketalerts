@@ -1,1 +1,2 @@
 schedule.enabled: false
+websocket.enabled: true
