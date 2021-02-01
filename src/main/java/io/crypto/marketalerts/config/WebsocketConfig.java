@@ -17,7 +17,7 @@ import java.net.URISyntaxException;
 @ConditionalOnProperty(
         value="websocket.enabled",
         havingValue = "true",
-        matchIfMissing = true)
+        matchIfMissing = false)
 @Slf4j
 public class WebsocketConfig {
 
