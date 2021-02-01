@@ -19,7 +19,7 @@ jobs:
         run: mvn clean install
 
       - name: Build Docker image
-        run: docker build -t portr.ctl.io/private/marketalerts:1.0.10 .
+        run: docker build -t portr.ctl.io/private/marketalerts:1.0.11 .
 
       - name: Publish latest image
-        run: docker push portr.ctl.io/private/marketalerts:1.0.10
+        run: docker push portr.ctl.io/private/marketalerts:1.0.11

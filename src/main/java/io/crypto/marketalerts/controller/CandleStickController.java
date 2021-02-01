@@ -17,8 +17,8 @@ public class CandleStickController {
     private final CalculationService calculationService;
 
     @GetMapping("/process")
-    public ResponseEntity<Void> processData(@RequestParam(value = "symbol") String symbol, @RequestParam(value = "interval") String interval, @RequestParam(value = "period") Integer period) {
-        calculationService.processData(symbol.toUpperCase(), Interval.valueOfLabel(interval), period);
+    public ResponseEntity<Void> processData(@RequestParam(value = "symbol") String symbol, @RequestParam(value = "interval") String interval) {
+        calculationService.processData(symbol.toUpperCase(), Interval.valueOfLabel(interval));
         return ResponseEntity.ok().build();
     }
 

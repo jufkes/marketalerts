@@ -4,7 +4,8 @@ import io.crypto.marketalerts.helper.TechnicalIndicatorHelper;
 import io.crypto.marketalerts.model.CandleStickData;
 import io.crypto.marketalerts.model.Interval;
 import io.crypto.marketalerts.model.RsiData;
-import io.crypto.marketalerts.service.BinanceService;
+import io.crypto.marketalerts.model.kline.KlineMessage;
+import io.crypto.marketalerts.service.KlineRepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,13 +20,13 @@ import java.util.List;
 @Validated
 public class RsiController {
 
-    private final BinanceService binanceService;
+    private final KlineRepositoryService klineRepositoryService;
 
     @GetMapping("/rsidata")
-    public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval) {
+    public ResponseEntity processData(@RequestParam(value = "symbol") String symbol, @RequestParam(value = "interval") String interval) {
         Integer period = 14;
-        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), Interval.valueOfLabel(interval), period);
-        RsiData rsi = TechnicalIndicatorHelper.calculateRsiData(candles);
+        List<KlineMessage.KlineData> klines = klineRepositoryService.getKlines(symbol.toUpperCase(), Interval.valueOfLabel(interval));
+        RsiData rsi = TechnicalIndicatorHelper.calculateRsiData(klines);
         return ResponseEntity.ok(rsi);
     }
 }
