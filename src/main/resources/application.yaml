@@ -11,7 +11,7 @@ spring:
 discord:
   webhook: ""
 
-schedule.enabled: false
+schedule.enabled: true
 
 websocket:
   enabled: true
