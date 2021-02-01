@@ -1,10 +1,10 @@
 package io.crypto.marketalerts.controller;
 
 import io.crypto.marketalerts.helper.TechnicalIndicatorHelper;
-import io.crypto.marketalerts.model.CandleStickData;
 import io.crypto.marketalerts.model.EmaData;
 import io.crypto.marketalerts.model.Interval;
-import io.crypto.marketalerts.service.BinanceService;
+import io.crypto.marketalerts.model.kline.KlineMessage;
+import io.crypto.marketalerts.service.KlineRepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,14 +19,14 @@ import java.util.List;
 @Validated
 public class EmaController {
 
-    private final BinanceService binanceService;
+    private final KlineRepositoryService klineRepositoryService;
 
     @GetMapping("/emadata")
-    public ResponseEntity processData(@RequestParam(value="symbol") String symbol, @RequestParam(value="interval") String interval, @RequestParam(value="period") Integer period) {
+    public ResponseEntity processData(@RequestParam(value = "symbol") String symbol, @RequestParam(value = "interval") String interval, @RequestParam(value = "period") Integer period) {
         // increment the period so that we get the right number of candles for processing
         period++;
-        List<CandleStickData> candles = binanceService.getCandlesStickData(symbol.toUpperCase(), Interval.valueOfLabel(interval), period);
-        EmaData ema = TechnicalIndicatorHelper.calculateEmaData(candles);
+        List<KlineMessage.KlineData> klines = klineRepositoryService.getKlines(symbol.toUpperCase(), Interval.valueOfLabel(interval));
+        EmaData ema = TechnicalIndicatorHelper.calculateEmaData(klines);
         return ResponseEntity.ok(ema);
     }
 
