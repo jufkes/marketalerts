@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +34,6 @@ public class CalculationService {
 
      period = the number of candles to retrieve. Could probably hard code this to 30 for now */
     public void processData(String symbol, Interval interval) {
-//        List<CandleStickData> candleStickData = binanceService.getCandlesStickData(symbol, interval, period);
-        // TODO get List<KlineData> instead
         List<KlineMessage.KlineData> klines = klineRepositoryService.getKlines(symbol.toUpperCase(), interval);
 
 
@@ -43,6 +42,8 @@ public class CalculationService {
             return;
         }
         // TODO need to sort the list of Klines before proceeding - Chase to get the direction required
+        // Sort by Close Time ascending
+        klines.sort(Comparator.comparing(KlineMessage.KlineData::getT));
 
         RsiData rsi = TechnicalIndicatorHelper.calculateRsiData(klines);
         MacdData macdData = TechnicalIndicatorHelper.calculateMacdData(klines);
