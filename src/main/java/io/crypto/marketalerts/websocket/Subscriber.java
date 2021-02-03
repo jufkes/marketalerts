@@ -16,6 +16,8 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class Subscriber {
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // send request to subscribe to streams
-        List<String> listOfStreams = getListOfStreams();
+        List<String> listOfStreams = getListOfStreamsForAllSymbols();
         wsClientEndpoint.sendMessage(buildRequest("SUBSCRIBE", listOfStreams));
 
         // add listener
@@ -52,6 +54,18 @@ public class Subscriber {
         });
     }
 
+    public void subscribeToAllIntervals(Symbol symbol) {
+        log.info("Subscribe to all intervals for " + symbol.getId());
+        List<String> streams = getStreamsForSymbol(symbol);
+        wsClientEndpoint.sendMessage(buildRequest("SUBSCRIBE", streams));
+    }
+
+    public void unsubscribeToAllIntervals(Symbol symbol) {
+        log.info("Unsubscribe from all intervals for " + symbol.getId());
+        List<String> streams = getStreamsForSymbol(symbol);
+        wsClientEndpoint.sendMessage(buildRequest("UNSUBSCRIBE", streams));
+    }
+
     private static String buildRequest(String method, List<String> params) {
         JsonArrayBuilder paramsBuilder = Json.createArrayBuilder();
         params.forEach(paramsBuilder::add);
@@ -64,15 +78,17 @@ public class Subscriber {
                 .toString();
     }
 
-    private List<String> getListOfStreams() {
+    private List<String> getListOfStreamsForAllSymbols() {
         List<String> streams = new ArrayList<>();
         List<Symbol> allSymbols = symbolRepository.findAll();
-        allSymbols.forEach(symbol -> {
-            for (Interval interval : Interval.values()) {
-                streams.add(symbol.getId().toLowerCase() + "@kline_" + interval.getLabel());
-            }
-        });
+        allSymbols.forEach(symbol -> streams.addAll(getStreamsForSymbol(symbol)));
 
         return streams;
+    }
+
+    private List<String> getStreamsForSymbol(Symbol symbol) {
+        return Stream.of(Interval.values()).map(interval ->
+                symbol.getId().toLowerCase() + "@kline_" + interval.getLabel())
+                .collect(Collectors.toList());
     }
 }

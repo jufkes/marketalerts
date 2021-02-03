@@ -5,6 +5,7 @@ import io.crypto.marketalerts.model.symbol.AddSymbolRequest;
 import io.crypto.marketalerts.model.symbol.BulkAddSymbolsRequest;
 import io.crypto.marketalerts.model.symbol.Symbol;
 import io.crypto.marketalerts.repository.SymbolRepository;
+import io.crypto.marketalerts.websocket.Subscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -19,6 +20,7 @@ public class SymbolService {
 
     private final SymbolRepository symbolRepository;
     private final TokenRecordRepositoryService tokenRecordRepositoryService;
+    private final Subscriber subscriber;
 
     public List<String> getSymbols() {
         return symbolRepository.findAll().stream().map(Symbol::getId).collect(Collectors.toList());
@@ -34,6 +36,7 @@ public class SymbolService {
             return byId.get();
         } else {
             Symbol newSymbol = Symbol.builder().id(symbolName).build();
+            subscriber.subscribeToAllIntervals(newSymbol);
             return symbolRepository.save(newSymbol);
         }
     }
@@ -41,14 +44,15 @@ public class SymbolService {
     public List<Symbol> bulkAddSymbols(BulkAddSymbolsRequest request) {
         if (CollectionUtils.isEmpty(request.getSymbols())) throw new BadRequestException("Symbols cannot be empty");
 
-        return request.getSymbols().stream().map(symbol -> {
-            return addSymbol(AddSymbolRequest.builder().name(symbol).build());
-        }).collect(Collectors.toList());
+        return request.getSymbols().stream().map(symbol -> addSymbol(AddSymbolRequest.builder().name(symbol).build())).collect(Collectors.toList());
     }
 
     public void deleteSymbolAndAssociatedData(String name) {
         Optional<Symbol> symbol = symbolRepository.findById(name);
-        symbol.ifPresent(value -> symbolRepository.deleteById(value.getId()));
+        symbol.ifPresent(value -> {
+            symbolRepository.deleteById(value.getId());
+            subscriber.unsubscribeToAllIntervals(value);
+        });
         tokenRecordRepositoryService.deleteRecordsForSymbol(name);
     }
 }

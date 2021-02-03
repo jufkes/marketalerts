@@ -36,7 +36,6 @@ public class CalculationService {
     public void processData(String symbol, Interval interval) {
         List<KlineMessage.KlineData> klines = klineRepositoryService.getKlines(symbol.toUpperCase(), interval);
 
-
         if (klines.size() < 27) {
             log.info("Only " + klines.size() + " Klines stored for " + symbol + " at interval " + interval + " - skipping processing.");
             return;
